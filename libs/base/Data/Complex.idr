@@ -73,5 +73,6 @@ implementation Num (Complex Double) where
 implementation Neg (Complex Double) where
     negate = map negate
     (-) (a:+b) (c:+d) = ((a-c):+(b-d))
-    abs (a:+b) = (magnitude (a:+b):+0)
 
+implementation Abs (Complex Double) where
+    abs (a:+b) = (magnitude (a:+b):+0)

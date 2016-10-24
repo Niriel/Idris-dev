@@ -84,13 +84,15 @@ mutual
     negate (Pos Z)     = Pos Z
     negate (Pos (S n)) = NegS n
     negate (NegS n)    = Pos (S n)
-  
     (-) = subZ
-    abs = cast . absZ
 
   ||| Subtract two `ZZ`s. Consider using `(-) {a=ZZ}`.
   subZ : ZZ -> ZZ -> ZZ
   subZ n m = plusZ n (negate m)
+
+  implementation Abs ZZ where
+    abs = cast . absZ
+
 
 
 implementation Cast ZZ Integer where
@@ -154,4 +156,3 @@ plusCommutativeZ (Pos n) (Pos m) = cong $ plusCommutative n m
 plusCommutativeZ (Pos n) (NegS m) = Refl
 plusCommutativeZ (NegS n) (Pos m) = Refl
 plusCommutativeZ (NegS n) (NegS m) = cong {f=NegS} $ cong {f=S} $ plusCommutative n m
-

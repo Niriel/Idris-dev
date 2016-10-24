@@ -204,22 +204,49 @@ interface Num ty => Neg ty where
     ||| The underlying of unary minus. `-5` desugars to `negate (fromInteger 5)`.
     negate : ty -> ty
     (-) : ty -> ty -> ty
-    ||| Absolute value
-    abs : ty -> ty
 
 Neg Integer where
     negate x = prim__subBigInt 0 x
     (-) = prim__subBigInt
-    abs x = if x < 0 then -x else x
 
 Neg Int where
     negate x = prim__subInt 0 x
     (-) = prim__subInt
-    abs x = if x < (prim__truncBigInt_Int 0) then -x else x
 
 Neg Double where
     negate x = prim__negFloat x
     (-) = prim__subFloat
+
+--------------------------------------------------- [ Absolute Value Interface ]
+{- An absolute value must
+   * be positive: |x| >= 0
+   * be positive-definite: |x| = 0  <==>  x = 0
+   * preserve multiplication: |x y| = |x| |y|
+   * respect the triangle inequality  |x+y| <= |x| + |y|
+
+  Not all numbers form a field or an integral domain, so not all numbers
+  have an absolute value.  For example, dual numbers fail the positive-definite
+  condition, and split-complex numbers fail the positivity condition.
+
+  Note that the positivity condition is tricky.  Indeed, complex numbers do not
+  have a total order.  We assume that the image of `abs` is isomorphic to a
+  field or integral domain that has an order.  Therefore, even though we define
+  `abs` from C to C (where C denotes the complex numbers), we know that the
+  image of this `abs` is the real number line, which is totally ordered.
+-}
+
+||| The `Abs` interface defines the absolute value of numbers.
+interface Num ty => Abs ty where
+    ||| Absolute value
+    abs : ty -> ty
+
+Abs Integer where
+    abs x = if x < 0 then -x else x
+
+Abs Int where
+    abs x = if x < (prim__truncBigInt_Int 0) then -x else x
+
+Abs Double where
     abs x = if x < (prim__toFloatBigInt 0) then -x else x
 
 -- ------------------------------------------------------------

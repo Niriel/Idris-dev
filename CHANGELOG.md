@@ -43,6 +43,10 @@
   + `InstanceCtorN` is deprecated, use `ImplementationCtorN` instead.
   + `addInstance` is deprecated, use `addImplementation` instead.
   + `%instance` keyword is deprecated, use `%implementation` instead.
+* The `Neg` interface does not require defining `abs` (absolute value) anymore.
+  The `abs` function is moved to its own interface `Abs`.  This is motivated
+  by the fact that not all numbers that have an additive inverse have an absolute
+  value (dual or split-complex numbers for example).
 
 * Idris packages are now installed within a sub-directory `libs` of Idris' data directory, before they were installed in the directory's root.
 
